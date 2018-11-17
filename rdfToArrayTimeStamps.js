@@ -1,3 +1,7 @@
+// uncomment for use with Node.js
+//const rdf = require('rdf-ext')
+//const rdfFetch = require('rdf-fetch')
+
 /** take all the temporal stuff in the triples;
 it will gather typed literals with xsd:date, xsd:dateTime,
 and labels, keeping @id for possible link creation.
