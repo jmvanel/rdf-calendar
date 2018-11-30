@@ -38,13 +38,19 @@ function rdfCalendar_rdfToArrayTimeStamps(rdfUrl) {
     const serializer = new JsonLdSerializer({context: context})
 
     // forward the quads to the serializer
-    const jsonDataFromRdf = serializer.import(quadStream)
+    const stream = serializer.import(quadStream)
+    // console.log( 'FETCH stream  ' + JSON.stringify(stream, null, 2) );
 
-    console.log( 'FETCH jsonDataFromRdf ' + JSON.stringify(jsonDataFromRdf, null, 2) );
+    let result
+    stream.on('data', (data) => {
+      result = data
+    })
+
+    console.log( 'FETCH result ' + result, null, 2)
     // TODO actually start the JsonLdSerializer ???
 
     // use the JSON structure to feed the JSON structure to the calendar
-    return jsonDataFromRdf;
+    return result;
   }).catch((err) => {
     console.error(err.stack || err.message)
   })
