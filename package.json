@@ -1,7 +1,7 @@
 {
   "name": "rdf-calendar",
   "description": "Examples for RDFJS Interfaces",
-  "main": "rdfToArrayTimeStamps.js",
+  "main": "calendar-rdf.js",
   "scripts": {
     "lint": "standard",
     "test": "npm run lint"
@@ -17,7 +17,8 @@
     "stream",
     "calendar"
   ],
-  "author": "",
+  "author": "Jean-Marc Vanel",
+  "foaf": "http://jmvanel.free.fr/jmv.rdf#me",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/jmvanel/rdf-calendar/issues"
