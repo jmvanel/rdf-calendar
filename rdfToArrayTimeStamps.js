@@ -23,21 +23,15 @@ function rdfCalendar_rdfToArrayTimeStamps(rdfUrl) {
        "date": {
          "@id" : "http://dbpedia.org/ontology/startDate",
          "@type" : "http://www.w3.org/2001/XMLSchema#date" },
-       "subject": {
-         "@id" : "http://www.w3.org/2000/01/rdf-schema#label" }
+       "subject": "http://www.w3.org/2000/01/rdf-schema#label"
     },
   }
 
-  return rdfFetch( rdfUrl ).then(
-      (res) => {
-      console.log( 'FETCH ' + res );
-  return res.quadStream()
+  return rdfFetch( rdfUrl ).then( (res) => {
+    return res.quadStream()
   }).then((quadStream) => {
-    console.log( 'FETCH quadStream ' + quadStream );
-    const serializer = new JsonLdSerializer({context: context})
-    // forward the quads to the serializer
+    const serializer = new JsonLdSerializer({context: context, flatten: true})
     const stream = serializer.import(quadStream)
-    // console.log( 'FETCH stream  ' + JSON.stringify(stream, null, 2) );
 
     /* you need the stream.on(data) to receive the jsonld object
      * streams are by default paused.
@@ -47,17 +41,11 @@ function rdfCalendar_rdfToArrayTimeStamps(rdfUrl) {
       result = data
     })
 
-    let resVar = rdf.waitFor(stream).then(() => {
-       // console.log( 'FETCH waitFor().then(): result: ' + JSON.stringify(result, null, 2))
-       result
-    })
     /* rdf.waitFor() wraps a stream into a Promise: https://github.com/rdf-ext/rdf-ext/blob/master/lib/streams.js#L17
 In the jsonld serializer case the stream should emit one data event and after that an end event.
 The end event is used to resolve the promise. */
-    console.log( 'FETCH waitFor: resVar: ' + JSON.stringify(resVar, null, 2))
- 
-    // use the JSON structure to feed the JSON structure to the calendar
-    return resVar
+
+    return rdf.waitFor(stream).then(() => result )
 
   }).catch((err) => {
     console.error(err.stack || err.message)
