@@ -1,0 +1,42 @@
+{
+  "name": "rdf-calendar",
+  "description": "Examples for RDFJS Interfaces",
+  "main": "rdfToArrayTimeStamps.js",
+  "scripts": {
+    "lint": "standard",
+    "test": "npm run lint"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/jmvanel/rdf-calendar.git"
+  },
+  "keywords": [
+    "rdf",
+    "rdfjs",
+    "rdf-ext",
+    "stream",
+    "calendar"
+  ],
+  "author": "",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/jmvanel/rdf-calendar/issues"
+  },
+  "homepage": "https://github.com/jmvanel/rdf-calendar",
+  "dependencies": {
+    "@rdfjs/data-model": "github:rdfjs/data-model",
+    "rdf-ext": "^1.1.1",
+    "rdf-fetch": "^1.0.0",
+    "rdf-fetch-lite": "^1.0.0",
+    "rdf-parser-jsonld": "^1.0.1",
+    "rdf-parser-n3": "^1.1.1",
+    "rdf-serializer-jsonld": "^1.0.0",
+    "rdf-serializer-jsonld-ext": "^1.2.0",
+    "readable-stream": "^2.3.3",
+    "string-to-stream": "^1.1.0"
+  },
+  "devDependencies": {
+    "standard": "^9.0.2"
+  },
+  "readmeFilename": "README.md"
+}
