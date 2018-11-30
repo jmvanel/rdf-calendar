@@ -13,7 +13,7 @@ https://github.com/rdf-ext/rdf-examples/blob/develop/fetch-dbpedia.js
 https://github.com/rdf-ext/rdf-serializer-jsonld-ext/blob/master/test/test.js#L71
 
 @param RDF URL (can be a SPARQL GET query)
-@return array of objects with "date" and "subject" keys (for onuridrisoglu/calendar-component)
+@return Promise to array of objects with "date" and "subject" keys (for onuridrisoglu/calendar-component)
 */
 function rdfCalendar_rdfToArrayTimeStamps(rdfUrl) {
 
@@ -37,30 +37,25 @@ function rdfCalendar_rdfToArrayTimeStamps(rdfUrl) {
      * streams are by default paused.
      * The 'data' event handler starts it */
     let result
-    stream.on('data', (data) => {
-      result = data
-    })
+    stream.on('data', (data) => { result = data })
 
     /* rdf.waitFor() wraps a stream into a Promise: https://github.com/rdf-ext/rdf-ext/blob/master/lib/streams.js#L17
 In the jsonld serializer case the stream should emit one data event and after that an end event.
 The end event is used to resolve the promise. */
 
     return rdf.waitFor(stream).then(() => result )
-
-  }).catch((err) => {
-    console.error(err.stack || err.message)
   })
 }
 
-function test_rdfCalendar_rdfToArrayTimeStamps() {
-  var jsonDataFromRdf =
-    rdfCalendar_rdfToArrayTimeStamps(
-"http://semantic-forms.cc:1952/download?url=http%3A%2F%2Fsemantic-forms.cc%3A1952%2Fldp%2F1543562762912-1786636722827768&syntax=JSON-LD"
-)
-    // serialize output to stdout
-     console.log( 'JSON output: ' + JSON.stringify(jsonDataFromRdf) )
-    // TODO why empty result ??? probably it's a Future ...
+function test_rdfCalendar_rdfToArrayTimeStamps(url) {
+  let jsonDataFromRdf = rdfCalendar_rdfToArrayTimeStamps( url )
+    jsonDataFromRdf.then(result => {
+      console.log( 'JSON output: ' )
+      console.log( JSON.stringify(result) )
+  })
+  .catch((err) => { console.error(err.stack || err.message) })
 }
 
-test_rdfCalendar_rdfToArrayTimeStamps()
+test_rdfCalendar_rdfToArrayTimeStamps(
+"http://semantic-forms.cc:1952/download?url=http%3A%2F%2Fsemantic-forms.cc%3A1952%2Fldp%2F1543562762912-1786636722827768&syntax=JSON-LD")
 
