@@ -3,9 +3,15 @@ const rdf = require('rdf-ext')
 const rdfFetch = require('rdf-fetch')
 const JsonLdSerializer = require('rdf-serializer-jsonld-ext')
 
-/** take all the temporal stuff in the triples;
-it will gather typed literals with xsd:date, xsd:dateTime,
+/** take all the temporal stuff in the triples, and outputs it in JSON suitable for calendar UI;
+Currently gathers rdfs:label and dbpedia:startDate .
+Later it will gather all typed literals with xsd:date, xsd:dateTime,
 and labels, keeping @id for possible link creation.
+
+Use a local JSON-LD @context to translate the input JSON-LD:
+- read RDF URL,
+- serialize in JSON-LD with a specific @context,
+- map to calendar UI format
 
 Took inspiration from
 https://github.com/rdf-ext/rdf-examples/blob/develop/serialize-jsonld-with-prefix-map.js
@@ -50,8 +56,14 @@ The end event is used to resolve the promise. */
 function test_rdfCalendar_rdfToArrayTimeStamps(url) {
   let jsonDataFromRdf = rdfCalendar_rdfToArrayTimeStamps( url )
     jsonDataFromRdf.then(result => {
-      console.log( 'JSON output: ' )
-      console.log( JSON.stringify(result) )
+      // console.log( JSON.stringify(result, null, 2) )
+      let events = result["@graph"]
+      let eventsForCalendar = events . map ( event => {
+        return { "date": event.date ,
+                 "subject":  event.subject["@value"] }
+      })
+      console.log( JSON.stringify(eventsForCalendar) )
+// <calendar-component active-date="2018-08-01" items='[{"date":"2018-08-08","subject":"Meeting"}, {"date":"2018-08-14","subject":"Dentist Appointment"}, {"date":"2018-08-24","subject":"Dinner with Friends"}]'></calendar-component>
   })
   .catch((err) => { console.error(err.stack || err.message) })
 }
