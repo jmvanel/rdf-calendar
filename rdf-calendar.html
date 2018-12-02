@@ -22,11 +22,11 @@
 		})
 	  </script>
 
-<!--calendar-component active-date="2018-08-01" items='[{"date":"2018-08-08","subject":"Meeting"}, {"date":"2018-08-14","subject":"Dentist Appointment"}, {"date":"2018-08-24","subject":"Dinner with JMV"}]'></calendar-component
-<calendar-component active-date="2019-01-01" >
+<!--calendar-component active-date="2018-08-01"
+    items='[{"date":"2018-08-08","subject":"Meeting"}, {"date":"2018-08-14","subject":"Dentist Appointment"}, {"date":"2018-08-24","subject":"Dinner with JMV"}]'></calendar-component
  -->
 
-<calendar-component active-date="2019-06-01" >
+<calendar-component />
 
 </body>
 
@@ -42,12 +42,7 @@
 		  return /* decodeURIComponent*/(results[2].replace(/\+/g, " "));
 		}
 
-/** The JSON-LD value for date can be with or without @type */
-function getStringFromJSONLDvalue( jsonLDvalue ) {
-  let possibleValue = jsonLDvalue["@value"]
-  if (possibleValue) return possibleValue
-  else return jsonLDvalue
-}
+
  var loadVal = getParameterByName("url")
  console.log("loadVal URL " + loadVal);
  if (loadVal != null) {
@@ -56,11 +51,7 @@ function getStringFromJSONLDvalue( jsonLDvalue ) {
    var calendar = document.querySelector('calendar-component')
    let jsonDataFromRdf = rdfCalendar_rdfToArrayTimeStamps( url )
    jsonDataFromRdf.then(result => {
-      let events = result["@graph"]
-      let eventsForCalendar = events . map ( event => {
-        return { "date": getStringFromJSONLDvalue(event.date) ,
-                 "subject":  event.subject["@value"] }
-      })
+      let eventsForCalendar = transformJSONLDforCalendar( result )
       console.log( JSON.stringify(eventsForCalendar) )
       calendar . items = eventsForCalendar
   })

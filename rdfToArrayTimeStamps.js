@@ -54,17 +54,29 @@ The end event is used to resolve the promise. */
   })
 }
 
+/** The JSON-LD value for date can be with or without @type */
+function getStringFromJSONLDvalue( jsonLDvalue ) {
+  let possibleValue = jsonLDvalue["@value"]
+  if (possibleValue) return possibleValue
+  else return jsonLDvalue
+}
+
+/** transform JSON-LD for Calendar */
+function transformJSONLDforCalendar( result ) {
+      let events = result["@graph"]
+      let eventsForCalendar = events . map ( event => {
+        return { "date": getStringFromJSONLDvalue(event.date) ,
+                 "subject":  event.subject["@value"] }
+      })
+  return eventsForCalendar
+}
+
 function test_rdfCalendar_rdfToArrayTimeStamps(url) {
   let jsonDataFromRdf = rdfCalendar_rdfToArrayTimeStamps( url )
     jsonDataFromRdf.then(result => {
       // console.log( JSON.stringify(result, null, 2) )
-      let events = result["@graph"]
-      let eventsForCalendar = events . map ( event => {
-        return { "date": event.date ,
-                 "subject":  event.subject["@value"] }
-      })
+      let eventsForCalendar = transformJSONLDforCalendar( result )
       console.log( JSON.stringify(eventsForCalendar) )
-// <calendar-component active-date="2018-08-01" items='[{"date":"2018-08-08","subject":"Meeting"}, {"date":"2018-08-14","subject":"Dentist Appointment"}, {"date":"2018-08-24","subject":"Dinner with Friends"}]'></calendar-component>
   })
   .catch((err) => { console.error(err.stack || err.message) })
 }
