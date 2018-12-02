@@ -17,7 +17,9 @@
 	    	document.addEventListener('WebComponentsReady', function() {
 	    		var calendar = document.querySelector('calendar-component');
 	    		document.addEventListener('EventClicked', function(e) {
-	      			alert('Event clicked : ['+e.detail.subject+']');
+                                // alert('Event clicked : ['+ JSON.stringify(e.detail) +']');
+				window.open(e.detail.uri, "NAME",
+                                  "resizable=yes,modal=yes,target="+e.detail.uri)
 	      	});
 		})
 	  </script>

@@ -66,7 +66,9 @@ function transformJSONLDforCalendar( result ) {
       let events = result["@graph"]
       let eventsForCalendar = events . map ( event => {
         return { "date": getStringFromJSONLDvalue(event.date) ,
-                 "subject":  event.subject["@value"] }
+                 "subject":  event.subject["@value"] ,
+                 "uri":  event["@id"]
+               }
       })
   return eventsForCalendar
 }
