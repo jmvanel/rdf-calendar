@@ -42,6 +42,12 @@
 		  return /* decodeURIComponent*/(results[2].replace(/\+/g, " "));
 		}
 
+/** The JSON-LD value for date can be with or without @type */
+function getStringFromJSONLDvalue( jsonLDvalue ) {
+  let possibleValue = jsonLDvalue["@value"]
+  if (possibleValue) return possibleValue
+  else return jsonLDvalue
+}
  var loadVal = getParameterByName("url")
  console.log("loadVal URL " + loadVal);
  if (loadVal != null) {
@@ -52,7 +58,7 @@
    jsonDataFromRdf.then(result => {
       let events = result["@graph"]
       let eventsForCalendar = events . map ( event => {
-        return { "date": event.date ,
+        return { "date": getStringFromJSONLDvalue(event.date) ,
                  "subject":  event.subject["@value"] }
       })
       console.log( JSON.stringify(eventsForCalendar) )

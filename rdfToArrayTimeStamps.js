@@ -27,8 +27,9 @@ function rdfCalendar_rdfToArrayTimeStamps(rdfUrl) {
   const context = {
     '@context': {
        "date": {
-         "@id" : "http://dbpedia.org/ontology/startDate",
-         "@type" : "http://www.w3.org/2001/XMLSchema#date" },
+         "@id" : "http://dbpedia.org/ontology/startDate"
+         // , "@type" : "http://www.w3.org/2001/XMLSchema#date"
+ },
        "subject": "http://www.w3.org/2000/01/rdf-schema#label"
     },
   }
