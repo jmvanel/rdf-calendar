@@ -1,7 +1,7 @@
 // For use with Node.js , comment for browser
-const rdf = require('rdf-ext')
-const rdfFetch = require('rdf-fetch')
-const JsonLdSerializer = require('rdf-serializer-jsonld-ext')
+// const rdf = require('rdf-ext')
+// const rdfFetch = require('rdf-fetch')
+// const JsonLdSerializer = require('rdf-serializer-jsonld-ext')
 
 /** take all the temporal stuff in the triples, and outputs it in JSON suitable for calendar UI;
 Currently gathers rdfs:label and dbpedia:startDate .
@@ -68,6 +68,8 @@ function test_rdfCalendar_rdfToArrayTimeStamps(url) {
   .catch((err) => { console.error(err.stack || err.message) })
 }
 
+/*
 test_rdfCalendar_rdfToArrayTimeStamps(
 "http://semantic-forms.cc:1952/download?url=http%3A%2F%2Fsemantic-forms.cc%3A1952%2Fldp%2F1543562762912-1786636722827768&syntax=JSON-LD")
+*/
 
