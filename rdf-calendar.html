@@ -17,7 +17,7 @@
 	    	document.addEventListener('WebComponentsReady', function() {
 	    		var calendar = document.querySelector('calendar-component');
 	    		document.addEventListener('EventClicked', function(e) {
-                                // alert('Event clicked : ['+ JSON.stringify(e.detail) +']');
+                                console.log('Event clicked : ['+ JSON.stringify(e.detail) +']');
 				window.open(e.detail.uri, "NAME",
                                   "resizable=yes,modal=yes,target="+e.detail.uri)
 	      	});
@@ -41,20 +41,20 @@
 		  // console.log("getParameterByName: results") ; console.log(results)
 		  if (!results) return null;
 		  if (!results[2]) return '';
-		  return /* decodeURIComponent*/(results[2].replace(/\+/g, " "));
+		  return /*decodeURIComponent*/ (results[2].replace(/\+/g, " "));
 		}
 
 
  var loadVal = getParameterByName("url")
- console.log("loadVal URL " + loadVal);
+ console.log("loadVal URL <" + loadVal + ">");
  if (loadVal != null) {
    var url = loadVal
-   console.log("URL " + url);
    var calendar = document.querySelector('calendar-component')
    let jsonDataFromRdf = rdfCalendar_rdfToArrayTimeStamps( url )
    jsonDataFromRdf.then(result => {
+      // console.log( 'JSON.stringify(result)' ); console.log( JSON.stringify(result) );
       let eventsForCalendar = transformJSONLDforCalendar( result )
-      console.log( JSON.stringify(eventsForCalendar) )
+      // console.log( JSON.stringify(eventsForCalendar) )
       calendar . items = eventsForCalendar
   })
   .catch((err) => { console.error(err.stack || err.message) })

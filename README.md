@@ -22,3 +22,23 @@ node --use-strict rdfToArrayTimeStamps.js
 Test locally with
 file:///home/jmv/src/rdf-calendar/rdf-calendar.html?url=http://semantic-forms.cc:1952/ldp/1543562762912-1786636722827768 
 
+or with SPARQL query
+```SPARQL
+CONSTRUCT {
+  ?S <http://dbpedia.org/ontology/startDate> ?DATE .
+  ?S <http://purl.org/NET/c4dm/event.owl#agent> ?AGENT .
+  ?S <http://purl.org/NET/c4dm/event.owl#place> ?PLACE .
+  ?S <http://purl.org/dc/terms/subject> ?SUBJECT .
+  ?S <http://www.w3.org/2000/01/rdf-schema#label> ?LAB . 
+} WHERE {
+  GRAPH ?G {
+  OPTIONAL { ?S <http://purl.org/NET/c4dm/event.owl#agent> ?AGENT . }
+  OPTIONAL { ?S <http://purl.org/NET/c4dm/event.owl#place> ?PLACE . }
+  OPTIONAL { ?S <http://purl.org/dc/terms/subject> ?SUBJECT . }
+  ?S a <http://schema.org/Event> .
+  ?S <http://dbpedia.org/ontology/startDate> ?DATE .
+  OPTIONAL { ?S <http://www.w3.org/2000/01/rdf-schema#label> ?LAB . }
+ FILTER ( STR(?DATE) >= STR(NOW()) ) 
+} }
+```
+on SPARQL server http://semantic-forms.cc:1952/sparql .

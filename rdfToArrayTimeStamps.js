@@ -29,8 +29,11 @@ function rdfCalendar_rdfToArrayTimeStamps(rdfUrl) {
        "date": {
          "@id" : "http://dbpedia.org/ontology/startDate"
          // , "@type" : "http://www.w3.org/2001/XMLSchema#date"
- },
-       "subject": "http://www.w3.org/2000/01/rdf-schema#label"
+       } ,
+       "subject": {
+         "@id" : "http://www.w3.org/2000/01/rdf-schema#label",
+         // "@type" : "http://www.w3.org/2001/XMLSchema#string"
+       }
     },
   }
 
@@ -56,6 +59,7 @@ The end event is used to resolve the promise. */
 
 /** The JSON-LD value for date can be with or without @type */
 function getStringFromJSONLDvalue( jsonLDvalue ) {
+  if( jsonLDvalue == undefined ) return null
   let possibleValue = jsonLDvalue["@value"]
   if (possibleValue) return possibleValue
   else return jsonLDvalue
@@ -64,11 +68,14 @@ function getStringFromJSONLDvalue( jsonLDvalue ) {
 /** transform JSON-LD for Calendar */
 function transformJSONLDforCalendar( result ) {
       let events = result["@graph"]
+ // console.log( 'JSON.stringify(events)') ; console.log( JSON.stringify(events))
       let eventsForCalendar = events . map ( event => {
-        return { "date": getStringFromJSONLDvalue(event.date) ,
-                 "subject":  event.subject["@value"] ,
-                 "uri":  event["@id"]
-               }
+// console.log( 'JSON.stringify(event)'); console.log( JSON.stringify(event));
+        return {
+          "date":	getStringFromJSONLDvalue(event.date) ,
+          "subject":	getStringFromJSONLDvalue(event.subject) ,
+          "uri":  event["@id"]
+        }
       })
   return eventsForCalendar
 }
