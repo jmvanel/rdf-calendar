@@ -66,7 +66,7 @@ function getStringFromJSONLDvalue( jsonLDvalue ) {
 }
 
 /** transform JSON-LD for Calendar */
-function transformJSONLDforCalendar( result ) {
+function transformJSONLDforCalendar( result, sfserver ) {
       let events = result["@graph"]
  // console.log( 'JSON.stringify(events)') ; console.log( JSON.stringify(events))
       let eventsForCalendar = events . map ( event => {
@@ -74,10 +74,18 @@ function transformJSONLDforCalendar( result ) {
         return {
           "date":	getStringFromJSONLDvalue(event.date) ,
           "subject":	getStringFromJSONLDvalue(event.subject) ,
-          "uri":  event["@id"]
+          "uri":  makeSFhyperlink(event["@id"], sfserver)
         }
       })
   return eventsForCalendar
+}
+
+/** make Semantic_Forms hyperlink */
+function makeSFhyperlink( url, sfserver ) {
+  if( ! url.startsWith(sfserver) ) {
+    return sfserver + "?displayuri=" + url
+  } else
+    return url
 }
 
 function test_rdfCalendar_rdfToArrayTimeStamps(url) {

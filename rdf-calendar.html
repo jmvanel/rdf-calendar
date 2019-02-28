@@ -28,6 +28,8 @@
     items='[{"date":"2018-08-08","subject":"Meeting"}, {"date":"2018-08-14","subject":"Dentist Appointment"}, {"date":"2018-08-24","subject":"Dinner with JMV"}]'></calendar-component
  -->
 
+<p id="title"></p>
+<p id="query-link"></p>
 <calendar-component />
 
 </body>
@@ -46,6 +48,8 @@
 
 
  var loadVal = getParameterByName("url")
+ var sfserver = getParameterByName("sfserver")
+
  console.log("loadVal URL <" + loadVal + ">");
  if (loadVal != null) {
    var url = loadVal
@@ -53,7 +57,7 @@
    let jsonDataFromRdf = rdfCalendar_rdfToArrayTimeStamps( url )
    jsonDataFromRdf.then(result => {
       // console.log( 'JSON.stringify(result)' ); console.log( JSON.stringify(result) );
-      let eventsForCalendar = transformJSONLDforCalendar( result )
+      let eventsForCalendar = transformJSONLDforCalendar( result, sfserver )
       // console.log( JSON.stringify(eventsForCalendar) )
       calendar . items = eventsForCalendar
   })
