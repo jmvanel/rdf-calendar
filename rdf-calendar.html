@@ -35,10 +35,15 @@
 </body>
 
 <script>
-	 function getParameterByName(name, url) {
+  function getParameterByName(parameterName, url) {
+    if (!url) url = window.location.href;
+    const url1 = new URL( url )
+    return url1.searchParams.get(parameterName)
+  }
+	 function getParameterByNameOLD(parameterName, url) {
 		  if (!url) url = window.location.href;
-		    name = name.replace(/[\[\]]/g, "\\$&");
-		  var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+		  parameterName = parameterName.replace(/[\[\]]/g, "\\$&");
+		  var regex = new RegExp("[?&]" + parameterName + "(=([^&#]*)|&|#|$)"),
 		        results = regex.exec(url);
 		  // console.log("getParameterByName: results") ; console.log(results)
 		  if (!results) return null;
