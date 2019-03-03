@@ -83,7 +83,7 @@ function transformJSONLDforCalendar( result, sfserver ) {
 /** make Semantic_Forms hyperlink */
 function makeSFhyperlink( url, sfserver ) {
   if( ! url.startsWith(sfserver) ) {
-    return sfserver + "display?displayuri=" + url
+    return sfserver + "display?displayuri=" + encodeURIComponent(url)
   } else
     return url
 }
