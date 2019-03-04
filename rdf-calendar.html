@@ -28,8 +28,8 @@
     items='[{"date":"2018-08-08","subject":"Meeting"}, {"date":"2018-08-14","subject":"Dentist Appointment"}, {"date":"2018-08-24","subject":"Dinner with JMV"}]'></calendar-component
  -->
 
-<p id="title"></p>
-<p id="query-link"></p>
+<span id="titleId"></span>&nbsp;
+<small id="query-link"></small>
 <calendar-component />
 
 </body>
@@ -51,13 +51,32 @@
 		  return /*decodeURIComponent*/ (results[2].replace(/\+/g, " "));
 		}
 
-
- var loadVal = getParameterByName("url")
+ var urlParameter = getParameterByName("url")
  var sfserver = getParameterByName("sfserver")
 
- console.log("loadVal URL <" + loadVal + ">");
- if (loadVal != null) {
-   var url = loadVal
+ {
+ var title = decodeURIComponent( getParameterByName("label") )
+ if(title != "" && title != "null") {
+   document.getElementById("titleId").append(document.createTextNode(title))
+   document.title = title
+ } }
+
+ {
+ var sparqlRegex = '/sparql.?\?query='
+ if( urlParameter . search(sparqlRegex) ) {
+   // Suppose service /sparql redirects to a UI; works for a semantic_forms server or Virtuoso
+   var sparqlUI = urlParameter
+   var link = document.createElement("a")
+   link.setAttribute("href", sparqlUI)
+   link.appendChild(document.createTextNode(" Edit SPARQL query"))
+   document.getElementById("query-link").append(link)
+   // mapElem.before(link)
+ }
+ }
+
+ console.log("urlParameter URL <" + urlParameter + ">");
+ if (urlParameter != null) {
+   var url = urlParameter
    var calendar = document.querySelector('calendar-component')
    let jsonDataFromRdf = rdfCalendar_rdfToArrayTimeStamps( url )
    jsonDataFromRdf.then(result => {
